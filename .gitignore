@@ -1,5 +1,8 @@
 *.bam
 
 /.snakemake/
-/results/
+
+results/*
+!results/.gitkeep
+
 /resources/count_tables/
