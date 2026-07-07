@@ -1,0 +1,5 @@
+name: genrich
+channels:
+  - bioconda
+dependencies:
+  - genrich=0.6.1

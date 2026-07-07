@@ -1,0 +1,6 @@
+name: duck_db
+channels:
+  - conda-forge
+dependencies:
+  - python-duckdb=1.5.4
+  - pandas=3.0.2
