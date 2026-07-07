@@ -1,0 +1,75 @@
+configfile: "config/snakemake.config.yaml"
+
+rule all:
+	input:
+		expand("results/frip/{sample}.frip.csv", sample=config['samples']),
+		expand("results/genrich_peaks/{sample}.narrowPeak", sample=config['samples'])
+
+rule samtools_index:
+	input:
+		"resources/input_bam/{sample}.bam"
+	output:
+		temp("resources/input_bam/{sample}.bam.bai")
+	conda:
+		"envs/samtools.yaml"
+	shell:
+		"samtools index {input}"
+
+rule samtools_sort:
+	input:
+		"resources/input_bam/{sample}.bam"
+	output:
+		temp("resources/sorted_bam/{sample}.bam")
+	conda:
+		"envs/samtools.yaml"
+	shell:
+		"samtools sort -n -o {output} {input}"
+
+rule genrich:
+	input:
+		"resources/sorted_bam/{sample}.bam"
+	output:
+		"results/genrich_peaks/{sample}.narrowPeak"
+	conda:
+		"envs/genrich.yaml"
+	shell:
+		"Genrich -j -t {input} -o {output}"
+
+rule awk_saf:
+	input:
+		"results/genrich_peaks/{sample}.narrowPeak"
+	output:
+		temp("resources/saf_files/{sample}.saf")
+	shell:
+		"awk -F $'\t' 'BEGIN {{OFS = FS}}{{ $2=$2+1; peakid=\"genrich_Peak_\"++nr; "
+		"print peakid,$1,$2,$3,\".\"}}' {input} > {output}"
+
+rule subread_featureCounts:
+	input:
+		bam="resources/input_bam/{sample}.bam",
+		saf="resources/saf_files/{sample}.saf"
+	output:
+		main="resources/count_tables/{sample}.counts",
+		sum="resources/count_tables/{sample}.counts.summary"
+	conda:
+		"envs/subread.yaml"
+	shell:
+		"featureCounts -p -F SAF -a {input.saf} --fracOverlap 0.2 -o {output.main} {input.bam}"
+
+rule calc_frip:
+	input:
+		"resources/count_tables/{sample}.counts.summary"
+	output:
+		"results/frip/{sample}.frip.csv"
+	shell:
+		"python3 workflow/scripts/frip_calculator.py -in {input} -out {output} "
+
+rule load_to_db:
+	input:
+		expand("results/genrich_peaks/{sample}.narrowPeak", sample=config['samples'])
+	output:
+		"results/peaks.db"
+	conda:
+		"envs/duck_db.yaml"
+	shell:
+		"python3 workflow/scripts/load_to_db.py"
