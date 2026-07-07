@@ -1,0 +1,5 @@
+samples:
+  SRR30256518: input_bam/SRR30256518.bam
+  SRR30256519: input_bam/SRR30256519.bam
+  SRR30256520: input_bam/SRR30256520.bam
+  SRR30256521: input_bam/SRR30256521.bam
