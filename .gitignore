@@ -3,6 +3,7 @@
 /.snakemake/
 
 results/*
-!results/.gitkeep
+!results/peaks.db
 
 /resources/count_tables/
+!resources/input_bam/
