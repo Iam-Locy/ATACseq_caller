@@ -35,4 +35,4 @@ all_peaks = pd.concat(dfs, ignore_index=True)
 with duckdb.connect("results/peaks.db") as con:
     con.sql("CREATE TABLE peaks AS (SELECT * FROM all_peaks);")
     con.sql("CREATE TABLE files AS FROM 'results/frip/summary.csv'")
-    con.sql("FROM files").show()
+    #con.sql("FROM files").show()
