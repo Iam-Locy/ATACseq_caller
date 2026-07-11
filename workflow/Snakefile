@@ -58,15 +58,16 @@ rule subread_featureCounts:
 
 rule calc_frip:
 	input:
-		"resources/count_tables/{sample}.counts.summary"
+		"resources/count_tables/"
 	output:
-		"results/frip/{sample}.frip.csv"
+		"results/frip/summary.csv"
 	shell:
 		"python3 workflow/scripts/frip_calculator.py -in {input} -out {output} "
 
 rule load_to_db:
 	input:
-		expand("results/genrich_peaks/{sample}.narrowPeak", sample=config['samples'])
+		expand("results/genrich_peaks/{sample}.narrowPeak", sample=config['samples']),
+		"results/frip/summary.csv"
 	output:
 		"results/peaks.db"
 	conda:
