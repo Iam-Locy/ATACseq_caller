@@ -15,10 +15,10 @@ pub struct Peak {
     pub start: i32,
     pub end: i32,
     pub name: String,
-    pub score: i32, 
+    pub score: i64, 
     pub strand: String,
-    pub signalValue: f32,
-    pub pValue: f32,
-    pub qValue: f32,
+    pub signal_value: f32,
+    pub p_value: f32,
+    pub q_value: f32,
     pub peak: i32
 }
