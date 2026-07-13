@@ -19,7 +19,14 @@ pub async fn get_files(State(state): State<AppState>) -> Json<Vec<File>>{
 
 
 fn get_files_from_db(conn: &Connection) -> Result<Vec<File>>{
-    let mut stmt = conn.prepare("SELECT sample, assigned_reads, peaks, frip FROM files;")?;
+    let mut stmt = conn.prepare("
+        SELECT 
+            sample,
+            assigned_reads,
+            peaks,
+            frip 
+        FROM files
+        ORDER BY sample;")?;
 
     stmt.query_map([], |row| {
         Ok(File {
@@ -61,7 +68,7 @@ fn get_peaks_from_db(conn: &Connection, sample: &str) -> Result<Vec<Peak>>{
                 qValue,
                 peak
         FROM peaks
-        WHERE sample = ?"
+        WHERE sample = ?;"
     )?;
 
     stmt.query_map([sample], |row| {
