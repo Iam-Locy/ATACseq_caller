@@ -9,6 +9,9 @@
  let error = $state<string | null>(null);
 
  $effect(() => {
+    loading = true;
+    error = null;
+    
     fetch('api/list')
         .then(r => {
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -18,13 +21,13 @@
         .catch(e => {error = e.message; loading = false;});
  });
 
- $inspect(samples)
- $inspect(selectedSample)
 </script>
 
 <div id="layout">
     {#if loading}
         <h1>Loading samples...</h1>
+    {:else if error}
+        <h1>{error}</h1>
     {:else}
         <Sidebar {samples} onselect={(name) => {
             selectedSample = samples.find((sample) => sample.sample === name) ?? null;
@@ -32,16 +35,10 @@
     {/if}
   
     <main>
-        {#if loading}
-            <h1>Loading sample...</h1>
-        {:else if error}
-            <h1>{error}</h1>
+        {#if selectedSample}
+            <Viewer sample={selectedSample}/>
         {:else}
-            {#if selectedSample}
-                <Viewer sample={selectedSample}/>
-            {:else}
-                <h1>Please select a sample!</h1>
-            {/if}
+            <h1>Please select a sample!</h1>
         {/if}
     </main>
 </div>
