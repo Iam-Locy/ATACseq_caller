@@ -7,7 +7,3 @@ results/*
 
 /resources/count_tables/
 !resources/input_bam/
-
-# Added by cargo
-
-/backend/target
