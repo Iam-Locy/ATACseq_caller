@@ -1,5 +1,5 @@
 # --- Build stage ---
-FROM rust:1.82-slim AS builder
+FROM rust:1.90-slim AS builder
 
 # duckdb's "bundled" feature compiles DuckDB's C++ core from source,
 # which needs cmake + a C++ compiler beyond what rust:slim ships with.
@@ -25,7 +25,7 @@ COPY src ./src
 RUN touch src/main.rs && cargo build --release
 
 # --- Runtime stage ---
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \

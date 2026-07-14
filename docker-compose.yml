@@ -13,7 +13,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./results:/app/results:ro
+      - ./results:/app/results
     environment:
       - DATABASE_PATH=/app/results/peaks.db
     restart: unless-stopped
