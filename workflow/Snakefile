@@ -1,9 +1,8 @@
 configfile: "config/snakemake.config.yaml"
 
 rule all:
-	input:
-		"results/frip/summary.csv",
-		expand("results/genrich_peaks/{sample}.narrowPeak", sample=config['samples'])
+    input:
+        "results/peaks.db"
 
 rule samtools_index:
 	input:
@@ -57,12 +56,12 @@ rule subread_featureCounts:
 		"featureCounts -p -F SAF -a {input.saf} --fracOverlap 0.2 -o {output.main} {input.bam}"
 
 rule calc_frip:
-	input:
-		"resources/count_tables/"
-	output:
-		"results/frip/summary.csv"
-	shell:
-		"python3 workflow/scripts/frip_calculator.py -in {input} -out {output} "
+    input:
+        expand("resources/count_tables/{sample}.counts", sample=config['samples'])
+    output:
+        "results/frip/summary.csv"
+    shell:
+        "python3 workflow/scripts/frip_calculator.py -in resources/count_tables/ -out {output}"
 
 rule load_to_db:
 	input:
