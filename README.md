@@ -1,8 +1,8 @@
-Try with:
-  docker compose --profile pipeline run --rm pipeline
-  docker compose up --build
+Try with:<br/>
+  docker compose --profile pipeline run --rm pipeline<br/>
+  docker compose up --build<br/>
 
-  Open in browser: "http://localhost:5173"
+  Open in browser: "http://localhost:5173"<br/>
 
-Turn off:
-  docker compose down
+Turn off:<br/>
+  docker compose down<br/>
