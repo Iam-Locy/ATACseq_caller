@@ -2,7 +2,7 @@ services:
   pipeline:
     build: 
       context: .
-      dickerfile: pipeline.Dockerfile
+      dockerfile: pipeline.Dockerfile
     volumes: 
       - ./resources:/pipeline/resources
       - ./results:/pipeline/results
