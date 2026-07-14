@@ -1,0 +1,27 @@
+services:
+  pipeline:
+    build: 
+      context: .
+      dickerfile: pipeline.Dockerfile
+    volumes: 
+      - ./resources:/pipeline/resources
+      - ./results:/pipeline/results
+    profiles: ["pipeline"]
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./results:/app/results:ro
+    environment:
+      - DATABASE_PATH=/app/results/peaks.duckdb
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+# Rust build
+backend/target
+
+# Node build
+frontend/node_modules
+frontend/dist
+
+# Data
+resources
+results
+
+# Misc
+.git
+struct.txt
+*.log
