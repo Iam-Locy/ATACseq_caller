@@ -2,8 +2,5 @@
 
 /.snakemake/
 
-/results/*
-!results
-
 /resources/count_tables/
 !resources/input_bam/
