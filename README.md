@@ -4,7 +4,7 @@ Made by: Lőrinc Kóródi (korodilorinc@gmail.com)
 
 ## Try with:
   Run peak calling pipeline and create database:
-  > sudo docker compose --profile pipeline run --rm --build pipeline
+  > docker compose --profile pipeline run --rm --build pipeline
 
   Start back- and frontend servers:
   > docker compose up --build
