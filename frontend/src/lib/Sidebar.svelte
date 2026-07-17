@@ -1,13 +1,21 @@
 <script lang="ts">
     import type {File} from './types.ts'
 
-    let {samples, onselect} : {samples: File[]; onselect: (sample: string) => void } = $props();
+    let {isloading, samples, onselect} : {isloading: boolean; samples: File[]; onselect: (sample: string) => void } = $props();
 </script>
 
 <nav>
-    {#each samples as file, index (file.sample)}
-        {@render menuCard(file)}
-    {/each}
+    {#if isloading}
+
+        <h1>Loading ...</h1>
+
+    {:else}
+
+        {#each samples as file, index (file.sample)}
+            {@render menuCard(file)}
+        {/each}
+
+    {/if}
 </nav>
 
 {#snippet menuCard({sample}: {sample: string})}
@@ -18,26 +26,44 @@
     nav {
         display: flex;
         flex-direction: column;
+        background-color: #FBF8EF;
+        padding: 20px 0px;
+        border-radius: 20px;
+        margin: 5px;
+    }
+
+    nav h1{
+        color: #12432D;
+        text-align: center;
     }
 
     nav :global(.file) {
-        background-color: #a3def3; /* flat light blue */
-        border: solid 1px;
+        position: relative;
         border-radius: 0; /* sharp corners */
         padding: 10px 20px;
-        font-size: 16px;
+        font-size: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: #12432D;
         cursor: pointer;
         transition: box-shadow 0.15s ease, transform 0.1s ease;
+        background-color: #FBF8EF;
         box-shadow: none;
+        border: none;
+    }
+
+    nav :global(.file)::after{
+        content: "";
+        position: absolute;
+        bottom: 0px;
+        left: 10%;
+        width: 80%;       /* however narrow you want */
+        height: 1px;
+        background: #12432d97;
     }
 
     nav :global(.file):hover {
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); /* weak shadow */
-    }
-
-    nav :global(.file):active {
-        box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4); /* stronger shadow on click */
-        transform: translateY(1px);
+        color: #368461;
     }
 
 </style>

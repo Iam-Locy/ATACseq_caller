@@ -18,7 +18,7 @@
             browser = await igv.createBrowser(containerEl, {
                 genome: 'danRer11',
                 locus: 'chr3',
-                tracks: []
+                tracks: [],
             });
 
         })();
@@ -56,6 +56,7 @@
                 name: `${sample.sample} peaks`,
                 type: "annotation",
                 format: "narrowPeak",
+                color: '#12432D',
                 features: peaks.map(p => ({
                     chr: p.chrom,
                     start: p.start,
@@ -69,7 +70,7 @@
 
 </script>
 
-<div>
+<div id='viewer'>
     {#if loading}
         <h1>Loading peaks...</h1>
     {:else if error}
@@ -77,9 +78,11 @@
     {:else}
         <div>
             <h1>{sample.sample}</h1>
-            <p>Number of assigned reads: {sample.assigned_reads}</p>
-            <p>Number of peaks: {sample.peaks}</p>
-            <p>Fraction of reads in peaks: {sample.frip}</p>
+            <div id="stats">
+                <p>Number of assigned reads: {sample.assigned_reads}</p>
+                <p>Number of peaks: {sample.peaks}</p>
+                <p>Fraction of reads in peaks: {sample.frip}</p>
+            </div>
         </div>
 
     {/if}
@@ -89,8 +92,49 @@
 </div>
 
 <style>
+    #viewer {
+        padding: 10px;
+        position: relative;
+        top: 0px;
+    }
+
+    h1 {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        text-align: center;
+        background-color: #12432D;
+        width: fit-content;
+        color: #FBF8EF;
+        border-radius: 10px;
+    }
+
+    #stats{
+        display: flex;
+        justify-content: space-around;
+       
+    }
+
+    #stats p{
+        padding: 5px 10px;
+        font-size: 20px;
+        color: #FBF8EF;
+        background-color: #12432D; 
+        border-radius: 5px;
+    }
+
     .igv-container {
-        width: 100%;
-        height: 600px;
+        background-color: #fff !important;
+        padding: 10px;
+        margin: 20px 0px;
+    }
+
+    .igv-container :global(.igv-track-container),
+    .igv-container:global(.igv-track),
+    .igv-container :global(.igv-track .igv-canvas),
+    .igv-container :global(.igv-sample-info-track),
+    .igv-container:global(.igv-ruler) {
+        background-color: transparent !important;
     }
 </style>

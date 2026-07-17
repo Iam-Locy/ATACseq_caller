@@ -24,13 +24,12 @@
 </script>
 
 <div id="layout">
-    {#if loading}
-        <h1>Loading samples...</h1>
-    {:else if error}
-        <h1>{error}</h1>
+
+    {#if error}
+        <h1>Error: {error}</h1>
     {:else}
-        <Sidebar {samples} onselect={(name) => {
-            selectedSample = samples.find((sample) => sample.sample === name) ?? null;
+        <Sidebar isloading={loading} {samples} onselect={(name) => {
+                selectedSample = samples.find((sample) => sample.sample === name) ?? null;
         }}/>
     {/if}
   
@@ -45,10 +44,25 @@
 
 
 <style>
+    #layout {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 20% 80%;
+    }
 
-  #layout {
-    display: grid;
-    grid-template-columns: 20% 80%;
-  }
+    main{
+        height: 80%;
+        margin: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: #FBF8EF;
+        border-radius: 20px;
+    }
+
+    main h1{
+        text-align: center;
+        color: #12432D; 
+    }
 
 </style>
