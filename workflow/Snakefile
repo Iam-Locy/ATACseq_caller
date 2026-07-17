@@ -28,7 +28,7 @@ rule genrich:
 	input:
 		"resources/sorted_bam/{sample}.bam"
 	output:
-		"results/genrich_peaks/{sample}.narrowPeak"
+		temp("results/genrich_peaks/{sample}.narrowPeak")
 	conda:
 		"envs/genrich.yaml"
 	shell:
@@ -48,18 +48,19 @@ rule subread_featureCounts:
 		bam="resources/input_bam/{sample}.bam",
 		saf="resources/saf_files/{sample}.saf"
 	output:
-		main="resources/count_tables/{sample}.counts",
-		sum="resources/count_tables/{sample}.counts.summary"
+		main=temp("resources/count_tables/{sample}.counts"),
+		summary=temp("resources/count_tables/{sample}.counts.summary")
 	conda:
 		"envs/subread.yaml"
 	shell:
 		"featureCounts -p -F SAF -a {input.saf} --fracOverlap 0.2 -o {output.main} {input.bam}"
 
-rule calc_frip:
+rule rule calc_frip:
     input:
-        expand("resources/count_tables/{sample}.counts", sample=config['samples'])
+        counts=expand("resources/count_tables/{sample}.counts", sample=config['samples']),
+        summaries=expand("resources/count_tables/{sample}.counts.summary", sample=config['samples'])
     output:
-        "results/frip/summary.csv"
+        temp("results/frip/summary.csv")
     shell:
         "python3 workflow/scripts/frip_calculator.py -in resources/count_tables/ -out {output}"
 
