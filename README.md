@@ -7,7 +7,7 @@ Made by: Lőrinc Kóródi (korodilorinc@gmail.com)
   > docker compose --profile pipeline run --rm --build pipeline
 
   Start back- and frontend servers:
-  > docker compose up --build
+  > docker compose up --build </br>
   This might take a while (even 10+ mins.) on the first time, because Rust has to bundle DuckDB .
 
   Open in browser: [frontend](http://localhost:5173)<br/>
